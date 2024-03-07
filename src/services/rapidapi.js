@@ -7,7 +7,7 @@ export const searchWeatherUrl =
 export const fetchOptions = {
   method: "GET",
   headers: {
-    "X-RapidAPI-Key": import.meta.env.VITE_RAPIDAPI_KEY,
-    "X-RapidAPI-Host": import.meta.env.VITE_RAPIDAPI_HOST,
+    "X-RapidAPI-Key": "f1434acf95mshd07c1c8ef49bd8ap19f84djsnda05ee12b0e7",
+    "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com",
   },
 };
