@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  body {
+    @apply text-stone-100;
+  }
+
+  .background_pattern {
+    background-color: #13111c;
+    background-image: radial-gradient(#d0d0db4c 0.5px, transparent 0.5px),
+      radial-gradient(#d0d0db4c 0.5px, #1a1529 0.5px);
+    background-size: 20px 20px;
+    background-position:
+      0 0,
+      10px 10px;
+    height: 100dvh;
+  }
+
+  .icon {
+    @apply relative flex flex-col items-center rounded-md h-8 w-8 p-2 hover:bg-zinc-600 active:border active:border-blue-500 transition cursor-pointer;
+  }
+
+  .icon-tooltip {
+    @apply absolute w-auto px-1 my-7 rounded-md shadow-md border border-slate-600 text-sm transition-all duration-100 scale-0 origin-top;
+  }
+}
