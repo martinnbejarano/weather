@@ -9,6 +9,7 @@ import { MainDataBox } from "../components/MainDataBox";
 import { FaTemperatureThreeQuarters } from "react-icons/fa6";
 import { WiHumidity } from "react-icons/wi";
 import { FaWind } from "react-icons/fa";
+import { HourlyForecastBox } from "../components/HourlyForecastBox";
 
 export const Home = () => {
   const [location, setLocation] = useState(() => {
@@ -46,7 +47,7 @@ export const Home = () => {
       </div>
       <article className="my-8 mx-1 flex flex-wrap justify-center gap-4">
         <MainDataBox
-          icon={"☀️"}
+          icon={<img src={data.current.condition.icon} alt="condition" />}
           info={data.current.temp_c}
           text={`°C - ${data.current.condition.text}`}
         />
@@ -68,6 +69,17 @@ export const Home = () => {
           info={data.current.wind_kph}
           text={"km/h - Wind speed"}
         />
+      </article>
+
+      <article className="flex overflow-x-scroll gap-2 w-screen md:w-[800px] mx-1 mt-4">
+        {data.forecast.forecastday[0].hour.map((data) => (
+          <HourlyForecastBox
+            temp_c={data.temp_c}
+            condition={data.condition.icon}
+            hour={data.time.split(" ")[1]}
+            key={data.time}
+          />
+        ))}
       </article>
     </main>
   );
