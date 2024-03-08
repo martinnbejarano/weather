@@ -10,8 +10,16 @@ import { HourlyForecastBox } from "../components/HourlyForecastBox";
 import { LocationContext } from "../context/location.jsx";
 
 export const Home = () => {
-  const { location, data, isLoading, isError, error } =
-    useContext(LocationContext);
+  const {
+    location,
+    data,
+    isLoading,
+    isError,
+    error,
+    favourite,
+    addFavourite,
+    removeFavourite,
+  } = useContext(LocationContext);
 
   const handleDefault = (e) => {
     e.preventDefault();
@@ -20,6 +28,7 @@ export const Home = () => {
 
   const handleFavourite = (e) => {
     e.preventDefault();
+    favourite ? removeFavourite(location) : addFavourite(location);
   };
 
   if (isLoading) return <p>Loading ...</p>;
@@ -31,7 +40,14 @@ export const Home = () => {
       <h3 className="text-2xl">{data.location.country}</h3>
       <div className="flex space-x-2">
         <button onClick={handleFavourite}>
-          <Icon icon={<FaHeart />} textOnHover={"Save"} />
+          <Icon
+            icon={
+              <FaHeart
+                className={`${favourite ? "text-red-600" : "text-stone-100"}`}
+              />
+            }
+            textOnHover={"Save"}
+          />
         </button>
         <button
           className="hover:bg-zinc-600 active:bg-zinc-500 rounded-md transition flex items-center space-x-1 p-2"
