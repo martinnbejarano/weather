@@ -3,17 +3,18 @@ import { createContext, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "../services/fetch";
 import { weatherUrl } from "../services/rapidapi";
+import {
+  getLocationFromLocalStorage,
+  isFavourite,
+} from "../services/localStorage";
 
 export const LocationContext = createContext();
 
 export const LocationProvider = ({ children }) => {
-  const [location, setLocation] = useState(() => {
-    const item = localStorage.getItem("default");
-    return item ? JSON.parse(item) : "Tokyo";
-  });
+  const [location, setLocation] = useState(getLocationFromLocalStorage);
   const [favourite, setFavourite] = useState(false);
 
-  const { data, isLoading, isError, error, refetch } = useQuery({
+  const { data, isLoading, isError, error, refetch, isRefetching } = useQuery({
     queryKey: ["forecast"],
     queryFn: () => fetcher(`${weatherUrl}${location}`),
     retry: false,
@@ -22,14 +23,6 @@ export const LocationProvider = ({ children }) => {
   useEffect(() => {
     setFavourite(isFavourite(location));
   }, [location]);
-
-  function isFavourite(locationQuery) {
-    const locations = localStorage.getItem("savedLocations");
-    if (locations) {
-      return JSON.parse(locations).includes(locationQuery);
-    }
-    return false;
-  }
 
   const addFavourite = (locationQuery) => {
     const locations = localStorage.getItem("savedLocations");
@@ -60,6 +53,16 @@ export const LocationProvider = ({ children }) => {
     setFavourite(false);
   };
 
+  const setGeolocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation(`${latitude}, ${longitude}`);
+        refetch();
+      });
+    }
+  };
+
   return (
     <LocationContext.Provider
       value={{
@@ -69,11 +72,13 @@ export const LocationProvider = ({ children }) => {
         isLoading,
         isError,
         error,
+        isRefetching,
         refetch,
         favourite,
         setFavourite,
         addFavourite,
         removeFavourite,
+        setGeolocation,
       }}
     >
       {children}
