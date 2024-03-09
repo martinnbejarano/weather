@@ -2,8 +2,11 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 import { Icon } from "../components/Icon";
+import { useContext } from "react";
+import { LocationContext } from "../context/location";
 
 export const Header = () => {
+  const { setGeolocation } = useContext(LocationContext);
   const dateNow = new Date().toLocaleDateString();
 
   return (
@@ -15,7 +18,9 @@ export const Header = () => {
       <div className="flex gap-6 md:mr-12">
         <Icon icon={<FaSearch />} textOnHover={"Search"} />
         <Icon icon={<FaRegHeart />} textOnHover={"Saved"} />
-        <Icon icon={<IoLocationSharp />} textOnHover={"Geolocation"} />
+        <button onClick={setGeolocation}>
+          <Icon icon={<IoLocationSharp />} textOnHover={"Geolocation"} />
+        </button>
       </div>
     </header>
   );

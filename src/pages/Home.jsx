@@ -14,6 +14,7 @@ export const Home = () => {
     location,
     data,
     isLoading,
+    isRefetching,
     isError,
     error,
     favourite,
@@ -31,7 +32,7 @@ export const Home = () => {
     favourite ? removeFavourite(location) : addFavourite(location);
   };
 
-  if (isLoading) return <p>Loading ...</p>;
+  if (isLoading || isRefetching) return <p>Loading ...</p>;
   if (isError) return <p>Something went wrong {error.message}</p>;
 
   return (
