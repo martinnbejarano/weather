@@ -4,6 +4,9 @@ import { IoLocationSharp } from "react-icons/io5";
 import { Icon } from "../components/Icon";
 import { useContext } from "react";
 import { LocationContext } from "../context/location";
+import { SideBar } from "./SideBar";
+import { Saved } from "./Saved";
+import { Search } from "./Search";
 
 export const Header = () => {
   const { setGeolocation } = useContext(LocationContext);
@@ -16,8 +19,16 @@ export const Header = () => {
         <h5 className="text-stone-100/70">Today, {dateNow}</h5>
       </div>
       <div className="flex gap-6 md:mr-12">
-        <Icon icon={<FaSearch />} textOnHover={"Search"} />
-        <Icon icon={<FaRegHeart />} textOnHover={"Saved"} />
+        <SideBar
+          icon={<Icon icon={<FaSearch />} textOnHover={"Search"} />}
+          content={<Search />}
+          title={"Search"}
+        />
+        <SideBar
+          content={<Saved />}
+          title={"Saved"}
+          icon={<Icon icon={<FaRegHeart />} textOnHover={"Saved"} />}
+        />
         <button onClick={setGeolocation}>
           <Icon icon={<IoLocationSharp />} textOnHover={"Geolocation"} />
         </button>
