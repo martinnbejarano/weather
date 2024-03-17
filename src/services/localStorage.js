@@ -10,3 +10,10 @@ export const isFavourite = (locationQuery) => {
   }
   return false;
 };
+
+export const getFavourites = () => {
+  const locations = localStorage.getItem("savedLocations");
+  if (locations) {
+    return JSON.parse(locations);
+  }
+};
