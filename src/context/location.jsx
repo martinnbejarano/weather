@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { createContext, useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetcher } from "../services/fetch";
 import { weatherUrl } from "../services/rapidapi";
 import {
@@ -14,8 +14,9 @@ export const LocationProvider = ({ children }) => {
   const [location, setLocation] = useState(getLocationFromLocalStorage);
   const [favourite, setFavourite] = useState(false);
 
+  const queryClient = useQueryClient()
   const { data, isLoading, isError, error, refetch, isRefetching } = useQuery({
-    queryKey: ["forecast"],
+    queryKey: ["forecast", location],
     queryFn: () => fetcher(`${weatherUrl}${location}`),
     retry: false,
   });
@@ -45,7 +46,7 @@ export const LocationProvider = ({ children }) => {
 
     if (locations) {
       const updatedLocations = locations.filter(
-        (location) => location != locationToRemove
+        (location) => location !== locationToRemove
       );
       localStorage.setItem("savedLocations", JSON.stringify(updatedLocations));
     }
@@ -57,11 +58,16 @@ export const LocationProvider = ({ children }) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
-        setLocation(`${latitude}, ${longitude}`);
-        refetch();
+        setNewLocation(`${latitude, longitude}`)
       });
     }
   };
+
+  const setNewLocation = (newLocation) => {
+    setLocation(newLocation)
+    console.log(newLocation)
+    queryClient.invalidateQueries({queryKey: ['forecast', location]})
+  }
 
   return (
     <LocationContext.Provider
@@ -79,6 +85,7 @@ export const LocationProvider = ({ children }) => {
         addFavourite,
         removeFavourite,
         setGeolocation,
+        setNewLocation
       }}
     >
       {children}
