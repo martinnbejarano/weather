@@ -41,7 +41,7 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente en tu máquina:
 
 2. **Configurar Variables de Entorno:**
 
-   Crea un archivo `.env` en la raíz del proyecto y agrega la variable de entorno de weatherapi de rapidapi.com:
+   Crea un archivo `.env.local` en la raíz del proyecto y agrega la variable de entorno de weatherapi de rapidapi.com:
 
    ```env
    VITE_RAPIDAPI_KEY=XXXXXXXXX
